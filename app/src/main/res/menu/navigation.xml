@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_home"
+        android:checked="false"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="Home" />
+    <item
+        android:id="@+id/nav_terapie"
+        android:icon="@android:drawable/ic_input_get"
+        android:title="Terapie" />
+    <item
+        android:id="@+id/nav_visite"
+        android:icon="@android:drawable/ic_menu_view"
+        android:title="Visite" />
+
+
+    <item
+        android:id="@+id/nav_medico"
+        android:icon="@android:drawable/ic_menu_myplaces"
+        android:title="Medico" />
+    <item
+        android:id="@+id/nav_account"
+        android:icon="@android:drawable/ic_menu_my_calendar"
+        android:title="account" />
+
+</menu>
