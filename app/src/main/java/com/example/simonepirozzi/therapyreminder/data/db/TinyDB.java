@@ -1,4 +1,4 @@
-package com.example.simonepirozzi.therapyreminder;
+package com.example.simonepirozzi.therapyreminder.data.db;
 
 import java.io.File;
 import java.io.FileOutputStream;

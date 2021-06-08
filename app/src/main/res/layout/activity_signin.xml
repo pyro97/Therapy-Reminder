@@ -16,7 +16,7 @@
         android:fontFamily="sans-serif"
         android:gravity="center"
         android:paddingBottom="20dp"
-        android:text="Registrazione"
+        android:text="@string/signin"
         android:textColor="@android:color/black"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:paddingLeft="20dp"
-            android:text="Nome *"
+            android:text="@string/name_signin"
             android:textColor="@android:color/black"
             android:textSize="18sp" />
 
@@ -65,7 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:paddingLeft="20dp"
-            android:text="Cognome *"
+            android:text="@string/surname_signin"
             android:textColor="@android:color/black"
             android:textSize="18sp" />
 
@@ -94,7 +94,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:paddingLeft="20dp"
-            android:text="Data di Nascita *"
+            android:text="@string/bithday_signin"
             android:textColor="@android:color/black"
             android:textSize="18sp" />
 
@@ -198,12 +198,12 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/registrati_button"
+        android:id="@+id/signin_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:backgroundTint="@color/colorPrimary"
-        android:text="Registrati"
+        android:text="@string/signin"
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textAppearance="@style/TextAppearance.AppCompat.Button"
@@ -221,7 +221,7 @@
         android:freezesText="false"
         android:linksClickable="true"
         android:paddingTop="10dp"
-        android:text="Hai già un account?"
+        android:text="@string/do_you_have_account"
         android:textAllCaps="false"
         android:textColor="@color/design_default_color_primary_dark"
         android:textSize="18sp"

@@ -8,17 +8,16 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.TextView;
+
+import com.example.simonepirozzi.therapyreminder.data.db.TinyDB;
+import com.example.simonepirozzi.therapyreminder.data.db.model.Doctor;
 
 import java.util.ArrayList;
 
@@ -46,11 +45,11 @@ public class ModificaMedicoFragment extends Fragment {
         db=new TinyDB(view.getContext());
 
         final int indice=db.getInt("indiceMedico");
-        Medico med= (Medico) db.getListObject("keyListaMedico",Medico.class).get(indice);
-        nome.setText(med.getNome());
-        cognome.setText(med.getCognome());
-        telefono.setText(med.getNumero());
-        via.setText(med.getVia());
+        Doctor med= (Doctor) db.getListObject("keyListaMedico", Doctor.class).get(indice);
+        nome.setText(med.getName());
+        cognome.setText(med.getSurname());
+        telefono.setText(med.getNumber());
+        via.setText(med.getAddress());
 
 
 
@@ -68,26 +67,26 @@ public class ModificaMedicoFragment extends Fragment {
                         via.setText(" ");
                     }
 
-                    Medico medico=new Medico(nome.getText().toString(),cognome.getText().toString(),telefono.getText().toString(),via.getText().toString());
+                    Doctor doctor =new Doctor(nome.getText().toString(),cognome.getText().toString(),telefono.getText().toString(),via.getText().toString());
 
 
 
-                    if(db.getListObject("keyListaMedico",Medico.class)==null)
+                    if(db.getListObject("keyListaMedico", Doctor.class)==null)
 
                         medicoArrayList=new ArrayList<Object>();
 
                     else
-                        medicoArrayList= db.getListObject("keyListaMedico",Medico.class);
+                        medicoArrayList= db.getListObject("keyListaMedico", Doctor.class);
 
 
                     medicoArrayList.remove(indice);
-                    medicoArrayList.add(medico);
+                    medicoArrayList.add(doctor);
 
                     db.putListObject("keyListaMedico",medicoArrayList);
                     //vai a terapie fragment
                     FragmentManager fragmentManager=getFragmentManager();
                     FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.contenitore,new MedicoFragment()).commit();
+                    fragmentTransaction.replace(R.id.containerFrame,new MedicoFragment()).commit();
                     fragmentTransaction.addToBackStack(null);
 
 
@@ -123,12 +122,12 @@ public class ModificaMedicoFragment extends Fragment {
                 builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if(db.getListObject("keyListaMedico",Medico.class)==null)
+                        if(db.getListObject("keyListaMedico", Doctor.class)==null)
 
                             medicoArrayList=new ArrayList<Object>();
 
                         else
-                            medicoArrayList= db.getListObject("keyListaMedico",Medico.class);
+                            medicoArrayList= db.getListObject("keyListaMedico", Doctor.class);
 
                         medicoArrayList.remove(indice);
 
@@ -136,7 +135,7 @@ public class ModificaMedicoFragment extends Fragment {
                         //vai a terapie fragment
                         FragmentManager fragmentManager=getFragmentManager();
                         FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
-                        fragmentTransaction.replace(R.id.contenitore,new MedicoFragment()).commit();
+                        fragmentTransaction.replace(R.id.containerFrame,new MedicoFragment()).commit();
                         fragmentTransaction.addToBackStack(null);
                         dialog.cancel();
                     }

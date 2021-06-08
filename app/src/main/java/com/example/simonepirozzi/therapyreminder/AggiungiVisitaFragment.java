@@ -15,6 +15,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.simonepirozzi.therapyreminder.data.db.TinyDB;
+import com.example.simonepirozzi.therapyreminder.data.db.model.Examination;
+import com.example.simonepirozzi.therapyreminder.data.db.model.Task;
+
 import java.util.ArrayList;
 
 public class AggiungiVisitaFragment extends Fragment {
@@ -23,7 +27,7 @@ public class AggiungiVisitaFragment extends Fragment {
 
     TinyDB db;
         ArrayList<Object> visitaArrayList;
-    ArrayList<Attività> attivitàArrayList1;
+    ArrayList<Task> taskArrayList1;
 
 
     @Nullable
@@ -59,25 +63,25 @@ public class AggiungiVisitaFragment extends Fragment {
                            }
 
 
-                    Visita visita=new Visita(titolo.getText().toString(),giorno.getText().toString(),orario.getText().toString(),luogo.getText().toString(),medico.getText().toString());
+                    Examination examination =new Examination(titolo.getText().toString(),giorno.getText().toString(),orario.getText().toString(),luogo.getText().toString(),medico.getText().toString());
 
 
 
-                    if(db.getListObject("keyListaVisita",Visita.class)==null)
+                    if(db.getListObject("keyListaVisita", Examination.class)==null)
 
                         visitaArrayList=new ArrayList<Object>();
 
                     else
-                        visitaArrayList= db.getListObject("keyListaVisita",Visita.class);
+                        visitaArrayList= db.getListObject("keyListaVisita", Examination.class);
 
 
-                    visitaArrayList.add(visita);
+                    visitaArrayList.add(examination);
 
                     db.putListObject("keyListaVisita",visitaArrayList);
                     //vai a terapie fragment
                     FragmentManager fragmentManager=getFragmentManager();
                     FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.contenitore,new VisiteFragment()).commit();
+                    fragmentTransaction.replace(R.id.containerFrame,new VisiteFragment()).commit();
                     fragmentTransaction.addToBackStack(null);
 
 

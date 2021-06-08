@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.util.TypedValue;
@@ -13,9 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.example.simonepirozzi.therapyreminder.data.db.TinyDB;
+import com.example.simonepirozzi.therapyreminder.data.db.model.Task;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,7 +27,7 @@ public class MonitoraggioTerapieFragment extends Fragment {
     Button monitoraggio;
     int index;
     TinyDB db;
-    ArrayList<Attività> listaTerapie;
+    ArrayList<Task> listaTerapie;
 
     @Nullable
     @Override
@@ -36,11 +36,11 @@ public class MonitoraggioTerapieFragment extends Fragment {
         linearLayout=view.findViewById(R.id.linearTerapieMon);
         db=new TinyDB(view.getContext());
 
-        if(db.getListObject("keyListaAttivita",Attività.class)!=null){
+        if(db.getListObject("keyListaAttivita", Task.class)!=null){
           //  listaTerapie=  (ArrayList<Attività>)db.getListObject("keyListaAttivita",Attività.class);
-            for(int i=0;i<db.getListObject("keyListaAttivita",Attività.class).size();i++){
+            for(int i = 0; i<db.getListObject("keyListaAttivita", Task.class).size(); i++){
                 index=i;
-                Attività att= (Attività) db.getListObject("keyListaAttivita",Attività.class).get(i);
+                Task att= (Task) db.getListObject("keyListaAttivita", Task.class).get(i);
                 LinearLayout ll=new LinearLayout(view.getContext());
                 int dim = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 120, getResources().getDisplayMetrics());
                 int dim1 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 200, getResources().getDisplayMetrics());
@@ -66,10 +66,10 @@ public class MonitoraggioTerapieFragment extends Fragment {
                 textView1.setLayoutParams(paramsText1);
 
                 Date oggi=new Date();
-                long diff= oggi.getTime()-att.getData().getTime();
+                long diff= oggi.getTime()-att.getDate().getTime();
                 Log.d("cazzo",diff+" ");
                 long diffGiorni= TimeUnit.DAYS.convert(diff,TimeUnit.MILLISECONDS); // giorni completati
-                long giorniRimanenti=Long.parseLong(att.getDurata())-diffGiorni;
+                long giorniRimanenti=Long.parseLong(att.getDuration())-diffGiorni;
                 int val=0;
                 String a=att.getNote();
                 String b="";
@@ -100,12 +100,12 @@ public class MonitoraggioTerapieFragment extends Fragment {
 
 
                 if(att.getNote().length()==0)
-                    textView1.setText(att.getAttivita()+"\n"+
-                            "Durata:"+att.getDurata()+"gg"+"\n"+"Giorni completati:"+diffGiorni+"\n"+
+                    textView1.setText(att.getTask()+"\n"+
+                            "Durata:"+att.getDuration()+"gg"+"\n"+"Giorni completati:"+diffGiorni+"\n"+
                             "Giorni Rimanenti"+giorniRimanenti+"\n");
                 else
-                    textView1.setText(att.getAttivita()+"\n"+"Dose:"+ att.getNote()+"\n"+
-                            "Durata:"+att.getDurata()+"gg"+"\n"+"Giorni completati:"+diffGiorni+"\n"+
+                    textView1.setText(att.getTask()+"\n"+"Dose:"+ att.getNote()+"\n"+
+                            "Durata:"+att.getDuration()+"gg"+"\n"+"Giorni completati:"+diffGiorni+"\n"+
                             "Giorni Rimanenti"+giorniRimanenti+"\n"+"Dose completata: "+completato+" "+c+
                     "\n"+"Dose rimanente: "+rimane+" "+c);
 

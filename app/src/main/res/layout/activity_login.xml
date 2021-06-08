@@ -82,12 +82,12 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/accedi"
+        android:id="@+id/login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:backgroundTint="@color/colorPrimary"
-        android:text="Accedi"
+        android:text="@string/login"
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textAppearance="@style/TextAppearance.AppCompat.Button"
@@ -95,7 +95,7 @@
         android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/link_registrazione"
+        android:id="@+id/link_signin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -104,7 +104,7 @@
         android:fontFamily="sans-serif"
         android:linksClickable="true"
         android:paddingTop="20dp"
-        android:text="Sei un nuovo utente? Registrati"
+        android:text="@string/signin_link"
         android:textAllCaps="false"
         android:textColor="@color/design_default_color_primary_dark"
         android:textSize="18sp"
@@ -113,7 +113,7 @@
         />
 
     <TextView
-        android:id="@+id/link_recupera"
+        android:id="@+id/link_forgot"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -123,7 +123,7 @@
         android:freezesText="false"
         android:linksClickable="true"
         android:paddingTop="20dp"
-        android:text="Password dimenticata?"
+        android:text="@string/forgotten_link"
         android:textAllCaps="false"
         android:textColor="@color/colorPrimary"
         android:textSize="18sp"

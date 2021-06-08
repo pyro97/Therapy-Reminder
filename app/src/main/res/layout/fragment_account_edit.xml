@@ -16,7 +16,7 @@
         android:fontFamily="sans-serif"
         android:gravity="center"
         android:paddingBottom="10dp"
-        android:text="Modifica Profilo"
+        android:text="@string/edit_account_title"
         android:textColor="@android:color/black"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:paddingLeft="20dp"
-            android:text="Nome"
+            android:text="@string/name"
             android:textColor="@android:color/black"
             android:textSize="18sp" />
 
@@ -63,7 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:paddingLeft="20dp"
-            android:text="Cognome"
+            android:text="@string/surname"
             android:textColor="@android:color/black"
             android:textSize="18sp" />
 
@@ -90,7 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:paddingLeft="20dp"
-            android:text="Data di Nascita"
+            android:text="@string/birthday"
             android:textColor="@android:color/black"
             android:textSize="18sp" />
 
@@ -199,7 +199,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:backgroundTint="@color/colorPrimary"
-            android:text="Elimina"
+            android:text="@string/delete"
             android:layout_marginRight="80dp"
             android:textAlignment="center"
             android:textAllCaps="false"
@@ -213,7 +213,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:backgroundTint="@android:color/holo_green_dark"
-            android:text="Salva"
+            android:text="@string/save"
             android:textAlignment="center"
             android:textAllCaps="false"
             android:textAppearance="@style/TextAppearance.AppCompat.Button"

@@ -26,7 +26,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/border1"
                     android:drawableLeft="@android:drawable/ic_input_add"
-                    android:text="Aggiungi nuova visita" />
+                    android:text="Aggiungi nuova examination" />
 
 
             </LinearLayout>

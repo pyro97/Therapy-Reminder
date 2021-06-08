@@ -18,33 +18,21 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import android.annotation.TargetApi;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
+
 import android.content.Intent;
-import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.TimePicker;
+
+import com.example.simonepirozzi.therapyreminder.data.db.TinyDB;
+import com.example.simonepirozzi.therapyreminder.data.db.model.Task;
+import com.example.simonepirozzi.therapyreminder.service.AlarmReceiver;
+import com.example.simonepirozzi.therapyreminder.ui.therapy.TherapyFragment;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Random;
 
 import static java.lang.Integer.parseInt;
 
@@ -54,7 +42,7 @@ public class AggiungiTerapieFragment extends Fragment {
     CheckBox lun,mar,mer,gio,ven,sab,dom;
     TinyDB db;
         ArrayList<Object> attivitàArrayList;
-    ArrayList<Attività> attivitàArrayList1;
+    ArrayList<Task> taskArrayList1;
 
     AlarmManager alarm_Manager;
     private PendingIntent pending_intent;
@@ -115,20 +103,20 @@ public class AggiungiTerapieFragment extends Fragment {
                     DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                     Date date = new Date();
 
-                    Attività attività=new Attività(attivita.getText().toString(),numberDurata.getText().toString(),
-                            arrayList,orario.getText().toString(),note.getText().toString(),date);
+                    Task task =new Task(attivita.getText().toString(),orario.getText().toString(),note.getText().toString(),
+                            arrayList,numberDurata.getText().toString(),date);
 
 
 
-                    if(db.getListObject("keyListaAttivita",Attività.class)==null)
+                    if(db.getListObject("keyListaAttivita", Task.class)==null)
 
                         attivitàArrayList=new ArrayList<Object>();
 
                     else
-                        attivitàArrayList= db.getListObject("keyListaAttivita",Attività.class);
+                        attivitàArrayList= db.getListObject("keyListaAttivita", Task.class);
 
 
-                    attivitàArrayList.add(attività);
+                    attivitàArrayList.add(task);
 
                     db.putListObject("keyListaAttivita",attivitàArrayList);
 
@@ -136,40 +124,40 @@ public class AggiungiTerapieFragment extends Fragment {
 
 
 
-                    final int hour = Integer.parseInt(attività.getOra().substring(0,attività.getOra().indexOf(":")));
-                    final int minute = Integer.parseInt(attività.getOra().substring((attività.getOra().indexOf(":"))+1));
+                    final int hour = Integer.parseInt(task.getTime().substring(0, task.getTime().indexOf(":")));
+                    final int minute = Integer.parseInt(task.getTime().substring((task.getTime().indexOf(":"))+1));
 
                     calendar.add(Calendar.SECOND, 3);
 
                     calendar.set(Calendar.HOUR_OF_DAY, hour);
                     calendar.set(Calendar.MINUTE, minute);
 
-                    for(int i=0;i<attività.getListaGiorni().size();i++){
-                        if(attività.getListaGiorni().get(i).equalsIgnoreCase("venerdi")){
+                    for(int i = 0; i< task.getListDays().size(); i++){
+                        if(task.getListDays().get(i).equalsIgnoreCase("venerdi")){
                             calendar.set(Calendar.DAY_OF_WEEK,Calendar.FRIDAY);
                         }
-                       else if(attività.getListaGiorni().get(i).equalsIgnoreCase("sabato")){
+                       else if(task.getListDays().get(i).equalsIgnoreCase("sabato")){
                             calendar.set(Calendar.DAY_OF_WEEK,Calendar.SATURDAY);
 
 
                         }
-                        else if(attività.getListaGiorni().get(i).equalsIgnoreCase("lunedi")){
+                        else if(task.getListDays().get(i).equalsIgnoreCase("lunedi")){
                             calendar.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
 
                         }
-                        else if(attività.getListaGiorni().get(i).equalsIgnoreCase("martedi")){
+                        else if(task.getListDays().get(i).equalsIgnoreCase("martedi")){
                             calendar.set(Calendar.DAY_OF_WEEK,Calendar.TUESDAY);
 
                         }
-                        else if(attività.getListaGiorni().get(i).equalsIgnoreCase("mercoledi")){
+                        else if(task.getListDays().get(i).equalsIgnoreCase("mercoledi")){
                             calendar.set(Calendar.DAY_OF_WEEK,Calendar.WEDNESDAY);
 
                         }
-                        else if(attività.getListaGiorni().get(i).equalsIgnoreCase("giovedi")){
+                        else if(task.getListDays().get(i).equalsIgnoreCase("giovedi")){
                             calendar.set(Calendar.DAY_OF_WEEK,Calendar.THURSDAY);
 
                         }
-                        else if(attività.getListaGiorni().get(i).equalsIgnoreCase("domenica")){
+                        else if(task.getListDays().get(i).equalsIgnoreCase("domenica")){
                             calendar.set(Calendar.DAY_OF_WEEK,Calendar.SUNDAY);
 
                         }
@@ -179,10 +167,10 @@ public class AggiungiTerapieFragment extends Fragment {
                     final Intent myIntent = new Intent(view.getContext(), AlarmReceiver.class);
 
                     myIntent.putExtra("extra", "yes");
-                    myIntent.putExtra("orario",attività.getOra());
-                    myIntent.putExtra("nomeAtt",attività.getAttivita()+" ");
-                    if(attività.getNote().length()>0)
-                        myIntent.putExtra("dose","Dosaggio:"+attività.getNote());
+                    myIntent.putExtra("orario", task.getTime());
+                    myIntent.putExtra("nomeAtt", task.getTask()+" ");
+                    if(task.getNote().length()>0)
+                        myIntent.putExtra("dose","Dosaggio:"+ task.getNote());
 
                     pending_intent = PendingIntent.getBroadcast(view.getContext(), 0, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -217,7 +205,7 @@ public class AggiungiTerapieFragment extends Fragment {
                     //vai a terapie fragment
                     FragmentManager fragmentManager=getFragmentManager();
                     FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.contenitore,new TerapieFragment()).commit();
+                    fragmentTransaction.replace(R.id.containerFrame,new TherapyFragment()).commit();
                     fragmentTransaction.addToBackStack(null);
 
 

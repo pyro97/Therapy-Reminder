@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +17,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import com.example.simonepirozzi.therapyreminder.data.db.TinyDB;
+import com.example.simonepirozzi.therapyreminder.data.db.model.Doctor;
 
 public class MedicoFragment extends Fragment {
 
@@ -34,9 +34,9 @@ public class MedicoFragment extends Fragment {
         linearLayout=view.findViewById(R.id.linearMedico);
         db=new TinyDB(view.getContext());
 
-        if(db.getListObject("keyListaMedico",Medico.class)!=null){
-            for(int i=0;i<db.getListObject("keyListaMedico",Medico.class).size();i++){
-                Medico  med= (Medico) db.getListObject("keyListaMedico",Medico.class).get(i);
+        if(db.getListObject("keyListaMedico", Doctor.class)!=null){
+            for(int i = 0; i<db.getListObject("keyListaMedico", Doctor.class).size(); i++){
+                Doctor med= (Doctor) db.getListObject("keyListaMedico", Doctor.class).get(i);
 
 
                 LinearLayout ll=new LinearLayout(view.getContext());
@@ -63,7 +63,7 @@ public class MedicoFragment extends Fragment {
 
                 TextView textView=new TextView(view.getContext());
                 textView.setLayoutParams(paramsText);
-                textView.setText(med.getNome()+" "+med.getCognome()+"\n"+med.getNumero());
+                textView.setText(med.getName()+" "+med.getSurname()+"\n"+med.getNumber());
                 textView.setTextColor(getResources().getColor(R.color.colorPrimary));
                 textView.setTextSize(20);
 
@@ -80,7 +80,7 @@ public class MedicoFragment extends Fragment {
                         db.putInt("indiceMedico",Integer.parseInt(v.getTag().toString()));
                         FragmentManager fragmentManager=getFragmentManager();
                         FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
-                        fragmentTransaction.replace(R.id.contenitore,new ModificaMedicoFragment()).commit();
+                        fragmentTransaction.replace(R.id.containerFrame,new ModificaMedicoFragment()).commit();
                         fragmentTransaction.addToBackStack(null);
                     }
                 });
@@ -101,7 +101,7 @@ public class MedicoFragment extends Fragment {
             public void onClick(View v) {
                 FragmentManager fragmentManager=getFragmentManager();
                 FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.contenitore,new AggiungiMedicoFragment()).commit();
+                fragmentTransaction.replace(R.id.containerFrame,new AggiungiMedicoFragment()).commit();
                 fragmentTransaction.addToBackStack(null);
             }
         });

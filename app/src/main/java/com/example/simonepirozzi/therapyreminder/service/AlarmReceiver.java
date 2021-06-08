@@ -1,9 +1,11 @@
-package com.example.simonepirozzi.therapyreminder;
+package com.example.simonepirozzi.therapyreminder.service;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+
+import com.example.simonepirozzi.therapyreminder.service.RingtonePlayingService;
 
 
 public class AlarmReceiver extends BroadcastReceiver {
@@ -19,7 +21,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         Log.e("MyActivity", "In the receiver with " + state);
 
-        Intent serviceIntent = new Intent(context,RingtonePlayingService.class);
+        Intent serviceIntent = new Intent(context, RingtonePlayingService.class);
         serviceIntent.putExtra("extra", state);
         serviceIntent.putExtra("nomeAtt1", n);
         serviceIntent.putExtra("orario1", o);

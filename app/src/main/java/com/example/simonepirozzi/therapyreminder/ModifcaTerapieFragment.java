@@ -16,6 +16,10 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
+import com.example.simonepirozzi.therapyreminder.data.db.TinyDB;
+import com.example.simonepirozzi.therapyreminder.data.db.model.Task;
+import com.example.simonepirozzi.therapyreminder.ui.therapy.TherapyFragment;
+
 import java.util.ArrayList;
 
 public class ModifcaTerapieFragment extends Fragment {
@@ -24,8 +28,8 @@ public class ModifcaTerapieFragment extends Fragment {
     CheckBox lun,mar,mer,gio,ven,sab,dom;
     TinyDB db;
         ArrayList<Object> attivitàArrayList;
-    ArrayList<Attività> attivitàArrayList1;
-    Attività att;
+    ArrayList<Task> taskArrayList1;
+    Task att;
 
 
     @Nullable
@@ -47,19 +51,19 @@ public class ModifcaTerapieFragment extends Fragment {
         dom=view.findViewById(R.id.EditcomboDomenica);
         db=new TinyDB(view.getContext());
         final int indice=db.getInt("indice");
-         att= (Attività) db.getListObject("keyListaAttivita",Attività.class).get(indice);
-        attivita.setText(att.getAttivita());
-        numberDurata.setText(att.getDurata()+"");
-        orario.setText(att.getOra());
+         att= (Task) db.getListObject("keyListaAttivita", Task.class).get(indice);
+        attivita.setText(att.getTask());
+        numberDurata.setText(att.getDuration()+"");
+        orario.setText(att.getTime());
         note.setText(att.getNote());
-        for(int i=0;i<att.getListaGiorni().size();i++){
-            if(att.getListaGiorni().get(i).equalsIgnoreCase("lunedi"))  lun.setChecked(true);
-            if(att.getListaGiorni().get(i).equalsIgnoreCase("martedi"))  mar.setChecked(true);
-            if(att.getListaGiorni().get(i).equalsIgnoreCase("mercoledi"))  mer.setChecked(true);
-            if(att.getListaGiorni().get(i).equalsIgnoreCase("giovedi"))  gio.setChecked(true);
-            if(att.getListaGiorni().get(i).equalsIgnoreCase("venerdi"))  ven.setChecked(true);
-            if(att.getListaGiorni().get(i).equalsIgnoreCase("sabato"))  sab.setChecked(true);
-            if(att.getListaGiorni().get(i).equalsIgnoreCase("domenica"))  dom.setChecked(true);
+        for(int i=0;i<att.getListDays().size();i++){
+            if(att.getListDays().get(i).equalsIgnoreCase("lunedi"))  lun.setChecked(true);
+            if(att.getListDays().get(i).equalsIgnoreCase("martedi"))  mar.setChecked(true);
+            if(att.getListDays().get(i).equalsIgnoreCase("mercoledi"))  mer.setChecked(true);
+            if(att.getListDays().get(i).equalsIgnoreCase("giovedi"))  gio.setChecked(true);
+            if(att.getListDays().get(i).equalsIgnoreCase("venerdi"))  ven.setChecked(true);
+            if(att.getListDays().get(i).equalsIgnoreCase("sabato"))  sab.setChecked(true);
+            if(att.getListDays().get(i).equalsIgnoreCase("domenica"))  dom.setChecked(true);
 
         }
 
@@ -88,27 +92,27 @@ public class ModifcaTerapieFragment extends Fragment {
                         note.setText(" ");
                     }
 
-                    Attività attività=new Attività(attivita.getText().toString(),numberDurata.getText().toString(),
-                            arrayList,orario.getText().toString(),note.getText().toString(),att.getData());
+                    Task task =new Task(attivita.getText().toString(),orario.getText().toString(),note.getText().toString(),
+                            arrayList,numberDurata.getText().toString(),att.getDate());
 
 
 
-                    if(db.getListObject("keyListaAttivita",Attività.class)==null)
+                    if(db.getListObject("keyListaAttivita", Task.class)==null)
 
                         attivitàArrayList=new ArrayList<Object>();
 
                     else
-                        attivitàArrayList= db.getListObject("keyListaAttivita",Attività.class);
+                        attivitàArrayList= db.getListObject("keyListaAttivita", Task.class);
 
                     attivitàArrayList.remove(indice);
-                    attivitàArrayList.add(attività);
+                    attivitàArrayList.add(task);
 
 
                     db.putListObject("keyListaAttivita",attivitàArrayList);
                     //vai a terapie fragment
                     FragmentManager fragmentManager=getFragmentManager();
                     FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.contenitore,new TerapieFragment()).commit();
+                    fragmentTransaction.replace(R.id.containerFrame,new TherapyFragment()).commit();
                     fragmentTransaction.addToBackStack(null);
 
 
@@ -141,12 +145,12 @@ public class ModifcaTerapieFragment extends Fragment {
                 builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if(db.getListObject("keyListaAttivita",Attività.class)==null)
+                        if(db.getListObject("keyListaAttivita", Task.class)==null)
 
                             attivitàArrayList=new ArrayList<Object>();
 
                         else
-                            attivitàArrayList= db.getListObject("keyListaAttivita",Attività.class);
+                            attivitàArrayList= db.getListObject("keyListaAttivita", Task.class);
 
                         attivitàArrayList.remove(indice);
 
@@ -154,7 +158,7 @@ public class ModifcaTerapieFragment extends Fragment {
                         //vai a terapie fragment
                         FragmentManager fragmentManager=getFragmentManager();
                         FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
-                        fragmentTransaction.replace(R.id.contenitore,new TerapieFragment()).commit();
+                        fragmentTransaction.replace(R.id.containerFrame,new TherapyFragment()).commit();
                         fragmentTransaction.addToBackStack(null);
                         dialog.cancel();
                     }

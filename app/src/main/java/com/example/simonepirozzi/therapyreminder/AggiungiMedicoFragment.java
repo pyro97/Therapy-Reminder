@@ -13,8 +13,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
+
+import com.example.simonepirozzi.therapyreminder.data.db.TinyDB;
+import com.example.simonepirozzi.therapyreminder.data.db.model.Doctor;
+import com.example.simonepirozzi.therapyreminder.data.db.model.Task;
 
 import java.util.ArrayList;
 
@@ -24,7 +27,7 @@ public class AggiungiMedicoFragment extends Fragment {
 
     TinyDB db;
         ArrayList<Object> medicoArrayList;
-    ArrayList<Attività> attivitàArrayList1;
+    ArrayList<Task> taskArrayList1;
 
 
     @Nullable
@@ -55,25 +58,25 @@ public class AggiungiMedicoFragment extends Fragment {
                         via.setText(" ");
                     }
 
-                    Medico medico=new Medico(nome.getText().toString(),cognome.getText().toString(),telefono.getText().toString(),via.getText().toString());
+                    Doctor doctor =new Doctor(nome.getText().toString(),cognome.getText().toString(),telefono.getText().toString(),via.getText().toString());
 
 
 
-                    if(db.getListObject("keyListaMedico",Medico.class)==null)
+                    if(db.getListObject("keyListaMedico", Doctor.class)==null)
 
                         medicoArrayList=new ArrayList<Object>();
 
                     else
-                        medicoArrayList= db.getListObject("keyListaMedico",Medico.class);
+                        medicoArrayList= db.getListObject("keyListaMedico", Doctor.class);
 
 
-                    medicoArrayList.add(medico);
+                    medicoArrayList.add(doctor);
 
                     db.putListObject("keyListaMedico",medicoArrayList);
                     //vai a terapie fragment
                     FragmentManager fragmentManager=getFragmentManager();
                     FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.contenitore,new MedicoFragment()).commit();
+                    fragmentTransaction.replace(R.id.containerFrame,new MedicoFragment()).commit();
                     fragmentTransaction.addToBackStack(null);
 
 

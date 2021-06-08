@@ -16,6 +16,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.example.simonepirozzi.therapyreminder.data.db.TinyDB;
+import com.example.simonepirozzi.therapyreminder.data.db.model.Examination;
+
 import java.util.ArrayList;
 
 public class ModificaVisiteFragment extends Fragment {
@@ -43,12 +46,12 @@ public class ModificaVisiteFragment extends Fragment {
         db=new TinyDB(view.getContext());
 
         final int indice=db.getInt("indiceVisita");
-        Visita vis= (Visita) db.getListObject("keyListaVisita",Visita.class).get(indice);
-        titolo.setText(vis.getTitolo());
-        luogo.setText(vis.getLuogo());
-        giorno.setText(vis.getGiorno());
-        orario.setText(vis.getOra());
-        medico.setText(vis.getMedico());
+        Examination vis= (Examination) db.getListObject("keyListaVisita", Examination.class).get(indice);
+        titolo.setText(vis.getTitle());
+        luogo.setText(vis.getLocation());
+        giorno.setText(vis.getDay());
+        orario.setText(vis.getTime());
+        medico.setText(vis.getDoctor());
 
 
 
@@ -70,25 +73,25 @@ public class ModificaVisiteFragment extends Fragment {
                     }
 
 
-                    Visita visita=new Visita(titolo.getText().toString(),giorno.getText().toString(),orario.getText().toString(),luogo.getText().toString(),medico.getText().toString());
+                    Examination examination =new Examination(titolo.getText().toString(),giorno.getText().toString(),orario.getText().toString(),luogo.getText().toString(),medico.getText().toString());
 
-                    if(db.getListObject("keyListaVisita",Visita.class)==null)
+                    if(db.getListObject("keyListaVisita", Examination.class)==null)
 
                         visitaArrayList=new ArrayList<Object>();
 
                     else
-                        visitaArrayList= db.getListObject("keyListaVisita",Visita.class);
+                        visitaArrayList= db.getListObject("keyListaVisita", Examination.class);
 
 
 
                     visitaArrayList.remove(indice);
-                    visitaArrayList.add(visita);
+                    visitaArrayList.add(examination);
 
                     db.putListObject("keyListaVisita",visitaArrayList);
                     //vai a terapie fragment
                     FragmentManager fragmentManager=getFragmentManager();
                     FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.contenitore,new VisiteFragment()).commit();
+                    fragmentTransaction.replace(R.id.containerFrame,new VisiteFragment()).commit();
                     fragmentTransaction.addToBackStack(null);
 
 
@@ -124,12 +127,12 @@ public class ModificaVisiteFragment extends Fragment {
                 builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if(db.getListObject("keyListaVisita",Visita.class)==null)
+                        if(db.getListObject("keyListaVisita", Examination.class)==null)
 
                             visitaArrayList=new ArrayList<Object>();
 
                         else
-                            visitaArrayList= db.getListObject("keyListaVisita",Visita.class);
+                            visitaArrayList= db.getListObject("keyListaVisita", Examination.class);
 
                         visitaArrayList.remove(indice);
 
@@ -137,7 +140,7 @@ public class ModificaVisiteFragment extends Fragment {
                         //vai a terapie fragment
                         FragmentManager fragmentManager=getFragmentManager();
                         FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
-                        fragmentTransaction.replace(R.id.contenitore,new VisiteFragment()).commit();
+                        fragmentTransaction.replace(R.id.containerFrame,new VisiteFragment()).commit();
                         fragmentTransaction.addToBackStack(null);
                         dialog.cancel();
                     }

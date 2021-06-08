@@ -1,17 +1,10 @@
-package com.example.simonepirozzi.therapyreminder;
+package com.example.simonepirozzi.therapyreminder.ui.therapy;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,20 +14,25 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.simonepirozzi.therapyreminder.AggiungiTerapieFragment;
+import com.example.simonepirozzi.therapyreminder.ModifcaTerapieFragment;
+import com.example.simonepirozzi.therapyreminder.MonitoraggioTerapieFragment;
+import com.example.simonepirozzi.therapyreminder.R;
+import com.example.simonepirozzi.therapyreminder.data.db.TinyDB;
+import com.example.simonepirozzi.therapyreminder.data.db.model.Task;
+
 import java.util.ArrayList;
 import java.util.Date;
 
-public class TerapieFragment extends Fragment {
+public class TherapyFragment extends Fragment {
     Button aggiungi,monitora;
     LinearLayout linearLayout;
-    Button monitoraggio;
     int index;
     TinyDB db;
     ArrayList<Object> listaTerapie,attivitàArrayList;
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_terapie,container,false);
         aggiungi=view.findViewById(R.id.aggiungi);
         linearLayout=view.findViewById(R.id.linearTerapie);
@@ -42,15 +40,15 @@ public class TerapieFragment extends Fragment {
         db=new TinyDB(view.getContext());
         attivitàArrayList=new ArrayList<>();
 
-        if(db.getListObject("keyListaAttivita",Attività.class)!=null){
+        if(db.getListObject("keyListaAttivita", Task.class)!=null){
 
-            for(int j=0;j<db.getListObject("keyListaAttivita",Attività.class).size();j++){
-                Attività ex= (Attività) db.getListObject("keyListaAttivita",Attività.class).get(j);
+            for(int j = 0; j<db.getListObject("keyListaAttivita", Task.class).size(); j++){
+                Task ex= (Task) db.getListObject("keyListaAttivita", Task.class).get(j);
                 Date oggi=new Date();
-                long diff= oggi.getTime()-ex.getData().getTime();
+                long diff= oggi.getTime()-ex.getDate().getTime();
 
-                if(diff==Long.parseLong(ex.getDurata())){
-                    attivitàArrayList= db.getListObject("keyListaAttivita",Attività.class);
+                if(diff==Long.parseLong(ex.getDuration())){
+                    attivitàArrayList= db.getListObject("keyListaAttivita", Task.class);
 
                     attivitàArrayList.remove(j);
 
@@ -59,11 +57,9 @@ public class TerapieFragment extends Fragment {
 
             }
 
-
-          //  listaTerapie=  (ArrayList<Attività>)db.getListObject("keyListaAttivita",Attività.class);
-            for(int i=0;i<db.getListObject("keyListaAttivita",Attività.class).size();i++){
+            for(int i = 0; i<db.getListObject("keyListaAttivita", Task.class).size(); i++){
                 index=i;
-                Attività att= (Attività) db.getListObject("keyListaAttivita",Attività.class).get(i);
+                Task att= (Task) db.getListObject("keyListaAttivita", Task.class).get(i);
                 LinearLayout ll=new LinearLayout(view.getContext());
                 int dim = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 80, getResources().getDisplayMetrics());
                 int dim1 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 200, getResources().getDisplayMetrics());
@@ -82,15 +78,15 @@ public class TerapieFragment extends Fragment {
                 TextView textView=new TextView(view.getContext());
                 TextView textView1=new TextView(view.getContext());
                 textView.setLayoutParams(paramsText);
-                textView.setText(att.getOra());
+                textView.setText(att.getTime());
                 textView.setTextColor(getResources().getColor(R.color.colorPrimary));
                 textView.setTextSize(20);
 
                 textView1.setLayoutParams(paramsText1);
                 if(att.getNote().length()==0)
-                    textView1.setText(att.getAttivita()+"\n"+"Durata:"+att.getDurata()+"gg");
+                    textView1.setText(att.getTask()+"\n"+"Durata:"+att.getDuration()+"gg");
                 else
-                    textView1.setText(att.getAttivita()+"\n"+"Dose:"+ att.getNote()+" Durata:"+att.getDurata()+"gg");
+                    textView1.setText(att.getTask()+"\n"+"Dose:"+ att.getNote()+" Durata:"+att.getDuration()+"gg");
 
                 textView1.setTextColor(getResources().getColor(R.color.common_google_signin_btn_text_dark_focused));
                 textView1.setTextSize(20);
@@ -107,7 +103,7 @@ public class TerapieFragment extends Fragment {
                         db.putInt("indice",Integer.parseInt(v.getTag().toString()));
                         FragmentManager fragmentManager=getFragmentManager();
                         FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
-                        fragmentTransaction.replace(R.id.contenitore,new ModifcaTerapieFragment()).commit();
+                        fragmentTransaction.replace(R.id.containerFrame,new ModifcaTerapieFragment()).commit();
                         fragmentTransaction.addToBackStack(null);
                     }
                 });
@@ -128,7 +124,7 @@ public class TerapieFragment extends Fragment {
             public void onClick(View v) {
                 FragmentManager fragmentManager=getFragmentManager();
                 FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.contenitore,new AggiungiTerapieFragment()).commit();
+                fragmentTransaction.replace(R.id.containerFrame,new AggiungiTerapieFragment()).commit();
                 fragmentTransaction.addToBackStack(null);
             }
         });
@@ -138,13 +134,10 @@ public class TerapieFragment extends Fragment {
             public void onClick(View v) {
                 FragmentManager fragmentManager=getFragmentManager();
                 FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.contenitore,new MonitoraggioTerapieFragment()).commit();
+                fragmentTransaction.replace(R.id.containerFrame,new MonitoraggioTerapieFragment()).commit();
                 fragmentTransaction.addToBackStack(null);
             }
         });
-
-
-
 
         return view;
     }

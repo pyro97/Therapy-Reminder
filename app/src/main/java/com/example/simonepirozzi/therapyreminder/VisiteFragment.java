@@ -17,6 +17,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.simonepirozzi.therapyreminder.data.db.TinyDB;
+import com.example.simonepirozzi.therapyreminder.data.db.model.Examination;
+
 public class VisiteFragment extends Fragment {
     Button aggiungi;
     LinearLayout linearLayout;
@@ -32,9 +35,9 @@ public class VisiteFragment extends Fragment {
         linearLayout=view.findViewById(R.id.linearVisita);
         db=new TinyDB(view.getContext());
 
-        if(db.getListObject("keyListaVisita",Visita.class)!=null){
-            for(int i=0;i<db.getListObject("keyListaVisita",Visita.class).size();i++){
-                Visita  vis= (Visita) db.getListObject("keyListaVisita",Visita.class).get(i);
+        if(db.getListObject("keyListaVisita", Examination.class)!=null){
+            for(int i = 0; i<db.getListObject("keyListaVisita", Examination.class).size(); i++){
+                Examination vis= (Examination) db.getListObject("keyListaVisita", Examination.class).get(i);
 
 
                 LinearLayout ll=new LinearLayout(view.getContext());
@@ -61,7 +64,7 @@ public class VisiteFragment extends Fragment {
 
                 TextView textView=new TextView(view.getContext());
                 textView.setLayoutParams(paramsText);
-                textView.setText(vis.getTitolo()+"\n"+vis.getOra()+" - ("+vis.getGiorno()+")");
+                textView.setText(vis.getTitle()+"\n"+vis.getTime()+" - ("+vis.getDay()+")");
                 textView.setTextColor(getResources().getColor(R.color.colorPrimary));
                 textView.setTextSize(20);
 
@@ -78,7 +81,7 @@ public class VisiteFragment extends Fragment {
                         db.putInt("indiceVisita",Integer.parseInt(v.getTag().toString()));
                         FragmentManager fragmentManager=getFragmentManager();
                         FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
-                        fragmentTransaction.replace(R.id.contenitore,new ModificaVisiteFragment()).commit();
+                        fragmentTransaction.replace(R.id.containerFrame,new ModificaVisiteFragment()).commit();
                         fragmentTransaction.addToBackStack(null);
                     }
                 });
@@ -99,7 +102,7 @@ public class VisiteFragment extends Fragment {
             public void onClick(View v) {
                 FragmentManager fragmentManager=getFragmentManager();
                 FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.contenitore,new AggiungiVisitaFragment()).commit();
+                fragmentTransaction.replace(R.id.containerFrame,new AggiungiVisitaFragment()).commit();
                 fragmentTransaction.addToBackStack(null);
             }
         });

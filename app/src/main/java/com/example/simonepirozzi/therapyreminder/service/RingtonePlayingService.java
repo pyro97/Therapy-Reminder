@@ -1,4 +1,4 @@
-package com.example.simonepirozzi.therapyreminder;
+package com.example.simonepirozzi.therapyreminder.service;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -14,6 +14,9 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
+
+import com.example.simonepirozzi.therapyreminder.AggiungiTerapieFragment;
+import com.example.simonepirozzi.therapyreminder.R;
 
 import java.util.Calendar;
 import java.util.Random;
