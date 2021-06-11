@@ -5,7 +5,7 @@ Android app that consists a medical reminder for visits, medicens and contact de
 <br>
 <p align="center">
   <img src="readme/th1.jpg" width="300">
-  <img src="readme/th2.jpg" width="300">
+  <img src="readme/th3.jpg" width="300">
 </p>
 
 #### This app has following packages:
