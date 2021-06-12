@@ -15,8 +15,9 @@ Android app that consists a medical reminder for visits, medicens and contact de
 4. **data**: It contains all the data accessing and manipulating components.
 
 
-#### This is a MVC Java Project
+#### This is a MVP Java Project
 - I used Google Mobile Ads to show banner and interstitial
+- I used TinyD to create a local DB to save and managed user data about questions and charcaters shown (https://tinydb.readthedocs.io/en/latest/index.html)
 
 <br>
 <p align="center">
